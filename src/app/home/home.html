@@ -1,0 +1,9 @@
+<div class="home-container" *ngIf="session">
+  <h2>¡Bienvenido al Dashboard del Gimnasio!</h2>
+  <p>Estás conectado con el correo: <strong>{{ session.user.email }}</strong></p>
+  
+  <div class="dashboard-content">
+    </div>
+  
+  <button mat-raised-button color="warn" (click)="signOut()">Cerrar Sesión</button>
+</div>
