@@ -1,26 +1,24 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { AccountComponent } from '../account/account'; // Importa el componente de cuenta
 import { SupabaseService } from '../services/supabase';
 
 @Component({
   selector: 'app-home',
+  standalone: true,
+  imports: [CommonModule, MatButtonModule, AccountComponent], // Importa los módulos y componentes necesarios
   templateUrl: './home.html',
-  styleUrls: ['./home.css']
+  styleUrls: ['./home.css'],
 })
 export class HomeComponent implements OnInit {
-  session = this.supabase.session;
+  session: any;
 
-  constructor(private readonly supabase: SupabaseService, private router: Router) {}
+  constructor(private readonly supabase: SupabaseService) {}
 
   ngOnInit(): void {
-    // Escucha cambios en el estado de autenticación
-    this.supabase.authChanges((_, session) => {
-      this.session = session;
-      if (!session) {
-        // Si no hay sesión, redirige al login
-        this.router.navigate(['/login']);
-      }
-    });
+    // Al cargar el componente, obtén la sesión actual una sola vez.
+    this.session = this.supabase.session;
   }
 
   async signOut(): Promise<void> {
