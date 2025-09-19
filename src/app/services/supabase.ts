@@ -70,4 +70,27 @@ export class SupabaseService {
   signOut() {
     return this.supabase.auth.signOut();
   }
+
+
+
+  // ...
+  // Obtener todos los planes
+  async getMembershipPlans() {
+    return this.supabase.from('membership_plan').select('*');
+  }
+
+  // Crear un nuevo plan
+  async createMembershipPlan(planData: any) {
+    return this.supabase.from('membership_plan').insert([planData]);
+  }
+
+  // Actualizar un plan existente
+  async updateMembershipPlan(planId: number, planData: any) {
+    return this.supabase.from('membership_plan').update(planData).eq('plan_id', planId);
+  }
+
+  // Eliminar un plan
+  async deleteMembershipPlan(planId: number) {
+    return this.supabase.from('membership_plan').delete().eq('plan_id', planId);
+  }
 }

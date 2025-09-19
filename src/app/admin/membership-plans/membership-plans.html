@@ -1,0 +1,90 @@
+<div class="plans-container">
+  <mat-card class="plan-form-card">
+    <mat-card-header>
+      <mat-card-title>
+        {{ editingPlanId ? 'Editar Plan de Membresía' : 'Crear Nuevo Plan' }}
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="planForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="outline">
+          <mat-label>Nombre del Plan</mat-label>
+          <input matInput formControlName="name" placeholder="Ej. Plan Mensual">
+          <mat-error *ngIf="planForm.controls['name'].hasError('required')">
+            El nombre es obligatorio.
+          </mat-error>
+        </mat-form-field>
+        
+        <mat-form-field appearance="outline">
+          <mat-label>Precio ($)</mat-label>
+          <input matInput formControlName="price" type="number" placeholder="Ej. 12000">
+          <mat-error *ngIf="planForm.controls['price'].hasError('required')">
+            El precio es obligatorio.
+          </mat-error>
+        </mat-form-field>
+        
+        <mat-form-field appearance="outline">
+          <mat-label>Duración (meses)</mat-label>
+          <input matInput formControlName="duration_months" type="number" placeholder="Ej. 1">
+          <mat-error *ngIf="planForm.controls['duration_months'].hasError('required')">
+            La duración es obligatoria.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Clases Incluidas</mat-label>
+          <input matInput formControlName="classes_included" type="number" placeholder="Ej. 8">
+          <mat-error *ngIf="planForm.controls['classes_included'].hasError('required')">
+            La cantidad de clases es obligatoria.
+          </mat-error>
+        </mat-form-field>
+
+        <div class="form-actions">
+          <button mat-raised-button color="primary" type="submit" [disabled]="loading">
+            <mat-icon *ngIf="loading">sync</mat-icon>
+            {{ editingPlanId ? 'Actualizar Plan' : 'Crear Plan' }}
+          </button>
+          <button mat-button type="button" (click)="cancelEdit()" *ngIf="editingPlanId">
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="plan-list-card">
+    <mat-card-header>
+      <mat-card-title>Planes de Membresía</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div *ngIf="loading" class="spinner-container">
+        <mat-spinner></mat-spinner>
+      </div>
+      
+      <div *ngIf="!loading && plans.length > 0">
+        <mat-list>
+          @for (plan of plans; track plan.plan_id) {
+            <mat-list-item>
+              <div matListItemTitle>{{ plan.name }}</div>
+              <div matListItemLine>
+                Precio: ${{ plan.price }} | Duración: {{ plan.duration_months }} meses | Clases: {{ plan.classes_included }}
+              </div>
+              <div class="list-actions">
+                <button mat-icon-button (click)="editPlan(plan)" matTooltip="Editar">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" (click)="deletePlan(plan.plan_id!)" matTooltip="Eliminar">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </mat-list-item>
+          }
+        </mat-list>
+      </div>
+      
+      <div *ngIf="!loading && plans.length === 0" class="no-plans-message">
+        <p>No hay planes de membresía creados. ¡Crea el primero!</p>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

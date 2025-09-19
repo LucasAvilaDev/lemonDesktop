@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { AccountComponent } from '../account/account'; // Importa el componente de cuenta
 import { SupabaseService } from '../services/supabase';
+import { MembershipPlansComponent } from '../admin/membership-plans/membership-plans';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, AccountComponent], // Importa los módulos y componentes necesarios
+  imports: [CommonModule, MatButtonModule, AccountComponent,MembershipPlansComponent], // Importa los módulos y componentes necesarios
   templateUrl: './home.html',
   styleUrls: ['./home.css'],
 })
